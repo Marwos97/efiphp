@@ -1,0 +1,25 @@
+body{
+    background: url(../img/fondo.png) no-repeat fixed center #333;
+    background-size: cover;
+}
+
+header{
+    background-image: url(../img/header.png) no-repeat  center #333;
+    
+}
+
+.logueo{
+    padding-top: 20%;
+}
+
+.publicaciones{
+    font-family: 'Grandstander', cursive;
+}
+
+.titulos{
+    font-family: 'Anton', sans-serif;
+}
+
+.demas{
+    font-family: 'Roboto Mono', monospace;
+}
