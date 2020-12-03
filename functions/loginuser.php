@@ -5,7 +5,7 @@ $alerta = "";
 require_once "conexion.php";
 
 $username = $_POST['username'];
-$password = $_POST['password'];
+$password = md5($_POST['password']);
 
 $query = mysqli_query($conn, "SELECT * FROM usuarios WHERE username = '$username' AND password = '$password'");
 $cant_resultados = mysqli_num_rows($query);
@@ -23,9 +23,6 @@ if($cant_resultados == 1){
     }else{
         header("Location: /efiphp/");
     }
-   
-
-    
 
     #echo "Bienvenido ". $data['nombre'];
 

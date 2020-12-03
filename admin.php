@@ -22,6 +22,8 @@
         logout();
      }
 
+    $result_categories = $conn->query("SELECT * FROM categories");
+    $cant_resultados_categories = mysqli_num_rows($result_categories);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,8 +91,32 @@
                 
             </tbody>
         </table>
-
-        
+        <hr>
+        <div>
+            <a href="newcategory.php" class="btn btn-primary ">Nueva Categoria</a>
+        </div><br>
+        <?php if($cant_resultados_categories > 0) :?>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre Categoria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($row_categorie = $result_categories->fetch_assoc()) : ?>
+                        <tr>
+                            <th scope="row"><?php echo $row_categorie['id']; ?></th>
+                            <td><?php echo $row_categorie['name']; ?></td>
+                            <td>
+                                <a href="editcategory.php?id=<?php echo $row_categorie['id']; ?>">Editar</a><br>
+                                <a href="/efiphp/functions/deletecategory.php?id=<?php echo $row_categorie['id']; ?>">Eliminar</a><br>
+                            </td>
+                        </tr>
+                <?php endwhile ?>
+            </tbody>
+        </table>
+        <?php endif ?>
 
     </div>
     

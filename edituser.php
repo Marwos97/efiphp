@@ -31,6 +31,7 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Ingrese nuevo nombre usuario</label>
                 <input type="hidden" value="<?php echo $user['id'];?>" name="userid">
+                
                 <input id="username" name="username" type="text" class="form-control"  aria-describedby="emailHelp" value="<?php echo $user['username'];?>">
             </div>
             <div class="form-group">
@@ -54,6 +55,8 @@
                     <p class="alerta"></p>
                     <input id="estado" name="estado" type="text" class="form-control" value="<?php echo $user['estado'];?>">
                 </div>
+            <?php  else :?>
+                <input type="hidden" value="<?php echo $user['estado'];?>" name="estado">
             <?php  endif ?>
             <div class="form-group">
                 <label for="exampleInputPassword1">Ingrese nuevo Password</label>

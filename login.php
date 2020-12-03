@@ -36,7 +36,7 @@
                 <input id="password" name="password" type="password" class="form-control" >
             </div>
             <button type="submit" class="btn btn-primary" id="iniciarsesion"> Iniciar sesion</button>
-            <a href="new_user.html" class="btn btn-primary">Crear Usuario</a>
+            <a href="new_user.php" class="btn btn-primary">Crear Usuario</a>
         </form>
         
 

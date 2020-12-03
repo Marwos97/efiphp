@@ -21,38 +21,45 @@ if(array_key_exists('logout',$_POST)){
     logout();
  }
 
-$result = $conn->query("SELECT * FROM posts ");
+$result = $conn->query("SELECT * FROM posts ORDER BY id;");
+
+$result_categories = $conn->query("SELECT * FROM categories ORDER BY id;");
+
+while ($row_category = $result_categories->fetch_assoc()){
+  $dataCategories[] = [
+    "id" => (string)$row_category['id'],
+    "nombre" => (string)$row_category['name']
+  ];
+}
+echo "datacategories";
+var_dump($dataCategories);
 
 
 $cant_resultados = mysqli_num_rows($result);
-
+$cant_categories =  mysqli_num_rows($result_categories);
+echo "categories";
+echo $cant_categories;
+echo "\n";
 echo $cant_resultados;
 
 
 
-$resultNombres = $conn->query("SELECT DISTINCT usuarios.nombre, usuarios.id FROM usuarios, posts WHERE usuarios.id = posts.id_user ;");
+$resultNombres = $conn->query("SELECT DISTINCT usuarios.nombre, usuarios.id, usuarios.id_fotoperfil FROM usuarios, posts WHERE usuarios.id = posts.id_user ;");
 
 $cant_nombres = mysqli_num_rows($resultNombres);
-/* echo $cant_nombres; */
 
 
+while($row = $resultNombres->fetch_assoc()){
+  $dataNombres[] =[
+  "nombre" => (string)$row['nombre'],
+  "id" => (string)$row['id'],
+  "id_fotoperfil" => (string)$row['id_fotoperfil']
+  ]; 
+}
 
-
-
- while($row = $resultNombres->fetch_assoc()){
-   
-   $dataNombres[] =[
-    "nombre" => (string)$row['nombre'],
-    "id" => (string)$row['id']
-   ];
-      
-  
-   
- }
-
- /* var_dump($dataNombres); */
 
 $datos = mysqli_fetch_array($result);
+var_dump($datos);
 
 $id_user = $_SESSION['idUser'];
 
@@ -117,9 +124,7 @@ $user = $resultUser->fetch_assoc();
         <?php elseif($user['estado']==""): ?>
           <h3 class="bg-success rounded-lg"><b>Escribe tu estado, No pierdas el tiempo!:</b></h3>
         <?php else: ?>
-        
           <h3 class="bg-success rounded-lg"><b>Escribe tu estado, No pierdas el tiempo!:</b></h3>
-
         <?php endif ?>
 
         <hr>
@@ -147,6 +152,14 @@ $user = $resultUser->fetch_assoc();
                 <input type="hidden" name="id_user" value="<?php echo $_SESSION['idUser'];?>" placeholder="<?php echo $_SESSION['id'];?>">
                 <textarea name="texto" id="texto" class="form-control" rows="3"></textarea>
               </div>
+              <div class="form-group">
+                <label for="sel1">Selecciona la categoria:</label>
+                <select class="form-control" id="category_id" name="category_id">
+                  <?php foreach($dataCategories as $category) :?>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['nombre']; ?></option>
+                  <?php endforeach ?>
+                </select>
+              </div>
               <button type="submit" class="btn btn-primary">POSTEA!</button>
             </form>
           </div>
@@ -156,19 +169,23 @@ $user = $resultUser->fetch_assoc();
 
       <h2 class="text-center">POSTEOS DE LA COMUNIDAD</h2>
 
-      <?php while($row = $result->fetch_assoc()) : ?>
-        
+      <?php while($row = $result->fetch_assoc()): ?>
           <div class="media mb-4 ">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-              <?php  for($i = 0; $i < $cant_nombres; $i++) : ?>
+          <?php  for($i = 0; $i < $cant_nombres; $i++) : ?>
                 <?php if($row["id_user"] == $dataNombres[$i]['id']) : ?>
-                  <h5  class="mt-0"><b><?php echo $dataNombres[$i]['nombre']; ?></b></h5>
+                    <img class="d-flex mr-3 rounded-circle" src="<?php echo $dataNombres[$i]['id_fotoperfil']; ?>" width="60px">
+                    <div class="media-body bg-info rounded-lg">
+                    <h4  class="mt-0  "><b><?php echo $dataNombres[$i]['nombre']; ?></b></h4>
+                    <?php foreach($dataCategories as $category): ?>
+                      <?php if ($category["id"] == $row["id_category"] ) :?>
+                        <p><b class="bg-info rounded-lg"> Categoria: <?php echo $dataCategories[$i]['nombre']; ?></b></p>
+                      <?php endif  ?>
+                    <?php endforeach  ?>
                 <?php endif  ?>
-              <?php endfor  ?>
+          <?php endfor  ?>
               
                 <small class="bg-info rounded-lg "><b>Posteo:</b></small>
-                <p id = "post" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bg-dark rounded-pill" style="padding-left: 2%;"><?php echo $row['post']; ?></p>
+                <p id = "post" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bg-dark rounded-pill" style="padding-left: 2%; color: white ;"><?php echo $row['post'];?> <?php if($row["id_user"] == $id_user) : ?><a href="editpost.php?id=<?php echo $row["id"]; ?>">EDITAR</a><?php endif  ?></p>
               
             
             </div>

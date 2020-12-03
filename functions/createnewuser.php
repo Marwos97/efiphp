@@ -3,25 +3,30 @@
     if(isset($_POST['create'])){
         if(!empty($_POST['username']) && !empty($_POST['nombre']) && !empty($_POST['password'])){
             
-            $nameRedMail = "m.olmedo@itecriocuarto.org.ar";
+    
             $username = $_POST['username'];
             $nombre = $_POST['nombre'];
             $apellido = $_POST['apellido'];
-            $password = $_POST['password'];
             $email = $_POST['email'];
+            $password = md5($_POST["password"]);
+            $imagen_name = $_FILES['imagen']['name'];
+            $imagen_content = $_FILES['imagen']['tmp_name'];
+            $ruta_guardado = "../img/img_perfiles";
 
-            $query = "INSERT INTO usuarios (nombre, apellido, mail, password, username) VALUES ('$nombre', '$apellido', '$email', '$password', '$username');";
+            $ruta_guardado = $ruta_guardado."/".$imagen_name;
+            
+            $ruta_mostrar = "./img/img_perfiles"."/".$imagen_name;
+            move_uploaded_file($imagen_content, $ruta_guardado);
+
+            $query = "INSERT INTO usuarios (nombre, apellido, mail, password, username, id_fotoperfil) VALUES ('$nombre', '$apellido', '$email', '$password', '$username', '$ruta_mostrar');";
             $conn->query($query);
 
-            $contenido = "Bienvenido a esta nueva red social ". $nombre . "\nSeñor/a: ". $apellido . " Es un placer tenerte como nuevo integrante de esta gran comunidad";
-
-            if (mail($email, $nameRedMail, $contenido) === TRUE ){
-                echo "se envio";
-            }
-
+            $header = "Nuevo registro de usuario";
+            $destinatario = "m.olmedo@itecriocuarto.org.arg";
             
+            mail($destinatario, "Nuevo registro de usuario", "Nuevo de usuario $username en la plataforma", $header);
 
-            /* header("Location: /efiphp/login.php"); */
+            header("Location: /efiphp/login.php");
 
         }
     }

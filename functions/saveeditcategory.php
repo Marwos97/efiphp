@@ -2,12 +2,12 @@
     require_once "conexion.php";
     session_start();
     
-    $id_post = $_POST['id_post'];
-    $texto = $_POST['texto'];
+    $category_id = $_POST['category_id'];
+    $category_name = $_POST['category_name'];
 
     
 
-    $sql = "UPDATE posts SET post = '$texto' WHERE id='$id_post'";
+    $sql = "UPDATE categories SET name = '$category_name' WHERE id='$category_id'";
     if ($conn->query($sql) === TRUE) {
         echo "OK";      
         header("Location: /efiphp/admin.php");

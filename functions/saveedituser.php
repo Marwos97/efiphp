@@ -32,12 +32,12 @@
     $sql = "UPDATE usuarios SET nombre = '$nombre', apellido = '$apellido', username = '$username', password='$password', mail='$email', estado = '$estado', id_fotoperfil = ''  WHERE id='$usrID'";
     if ($conn->query($sql) === TRUE) {
         echo "OK";      
-        header("Location: /efiphp/admin.php");
     }else {
         echo "ERROR";
     }
     mysqli_close($conn);
-    if(!isset($_SESSION['active'])){
+
+    if(isset($_SESSION['active'])){
         if($_SESSION['username']=="admin"){
           header("Location: /efiphp/admin.php");
         }else{

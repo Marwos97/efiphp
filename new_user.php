@@ -10,7 +10,7 @@
 <body>
     <div class="container" id="principal">
         <div class="row logueo">
-        <form method="POST" action="./functions/createnewuser.php" class="">
+        <form method="POST" action="./functions/createnewuser.php" class="" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Ingrese nombre Usuario</label>
                 <input id="username" name="username" type="text" class="form-control"  aria-describedby="emailHelp">
@@ -35,6 +35,11 @@
                 <label for="exampleInputPassword1">Password</label>
                 <p class="alerta"></p>
                 <input id="password" name="password" type="password" class="form-control" required >
+            </div>
+            <div class="form-group">
+                <label for="imagen">Foto de perfil</label>
+                <p class="alerta"></p>
+                <input type="file" name="imagen" >
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="create" name="create">Crear usuario</button>
             <a href="login.php" class="btn btn-danger btn-block">Volver a login</a>
